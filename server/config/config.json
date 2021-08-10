@@ -1,0 +1,9 @@
+{
+  "development": {
+    "username": "postgres",
+    "password": "postgres",
+    "database": "IndividualProjectH8_Phase2_Anon",
+    "host": "localhost",
+    "dialect": "postgres"
+  }
+}
