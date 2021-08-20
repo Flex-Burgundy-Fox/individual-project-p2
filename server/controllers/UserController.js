@@ -1,7 +1,6 @@
 const { User } = require('../models')
 const { passwordCompare, tokenGenerator } = require('../helpers/index')
-const {OAuth2Client} = require('google-auth-library')
-const { generateToken } = require('../../../fancy-todo-server/helpers/helpersIndex')
+const { OAuth2Client } = require('google-auth-library')
 
 
 class UserController {
@@ -10,7 +9,7 @@ class UserController {
         const {email, password} = req.body
         User.findOne({
             where: {
-                email 
+                email
             }
         })
         .then((user) => {
@@ -20,11 +19,12 @@ class UserController {
             if (!isCorrect) {
                 throw {error: 'Login Failed'}
             }
-            const access_token = generateToken({
+            const access_token = tokenGenerator({
                 id : user.id
             })
             res.status(200).json({
                 id: user.id,
+                name: `${user.first_name} ${user.last_name}`,
                 email: user.email,
                 access_token: access_token
             })
@@ -35,15 +35,18 @@ class UserController {
     }
 
     static register (req, res, next) {
-        const {email, password} = req.body
+        const {first_name, last_name, email, password} = req.body
         User.create(
             {
+                first_name,
+                last_name,
                 email,
                 password
             }
         )
         .then((user) => {
             res.status(201).json({
+                name: `${user.first_name} ${user.last_name}`,
                 id: user.id,
                 email: user.email
             })
@@ -86,6 +89,7 @@ class UserController {
                const access_token = tokenGenerator(payload)
                res.status(200).json({
                     id: user.id,
+                    name: `${user.first_name} ${user.last_name}`,
                     email: user.email,
                     access_token: access_token
                })
@@ -96,6 +100,7 @@ class UserController {
             const access_token = tokenGenerator(payload)
             res.status(201).json({
                 id: user.id,
+                name: `${user.first_name} ${user.last_name}`,
                 email: user.email,
                 access_token: access_token
             })
