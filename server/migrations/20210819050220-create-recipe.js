@@ -18,7 +18,7 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       summary: {
-        type: Sequelize.STRING
+        type: Sequelize.TEXT
       },
       status: {
         type: Sequelize.STRING

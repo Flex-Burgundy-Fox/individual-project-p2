@@ -1,5 +1,5 @@
-// const { pwCheck } = require("../helpers/bcrypt");
-// const { generateToken } = require("../helpers/jwt");
+const { pwCheck } = require("../helpers/bcrypt");
+const { generateToken } = require("../helpers/jwt");
 const { User } = require("../models");
 // const {OAuth2Client} = require('google-auth-library');
 // const CLIENT_ID = process.env.CLIENT_ID_GOOGLE
@@ -23,27 +23,27 @@ class Controller {
 			});
 	}
 
-	// static login(req, res, next) {
-	// 	User.findOne({
-	// 		where: {
-	// 			email: req.body.email,
-	// 		},
-	// 	})
-	// 		.then((result) => {
-	// 			if (!result) next({ name: "Username or Password is wrong" });
+	static login(req, res, next) {
+		User.findOne({
+			where: {
+				email: req.body.email,
+			},
+		})
+			.then((result) => {
+				if (!result) next({ name: "Username or Password is wrong" });
 
-	// 			if (pwCheck(req.body.password, result.password)) {
-	// 				let token = generateToken({
-	// 					id: result.id,
-	// 					email: result.email,
-	// 				});
-	// 				res.status(200).json({ message: "Login Succesfully", token });
-	// 			} else next({ name: "Username or Password is wrong" });
-	// 		})
-	// 		.catch((err) => {
-	// 			next(err);
-	// 		});
-	// }
+				if (pwCheck(req.body.password, result.password)) {
+					let token = generateToken({
+						id: result.id,
+						email: result.email,
+					});
+					res.status(200).json({ message: "Login Succesfully", token });
+				} else next({ name: "Username or Password is wrong" });
+			})
+			.catch((err) => {
+				next(err);
+			});
+	}
 
 	// static googleLogin(req, res, next){
     //     let token = req.body.token

@@ -1,7 +1,6 @@
 module.exports = (err, req, res, next) => {
 	// let statusCode;
 	// let errors = [];
-
 	// switch (err.name) {
 	// 	case "JWT Invalid":
 	// 		statusCode = 401;
@@ -11,7 +10,11 @@ module.exports = (err, req, res, next) => {
 	// 		statusCode = 401;
 	// 		errors.push(err.name);
 	// 		break;
-	// 	case "Task Not Found":
+	//  case "JsonWebTokenError":
+	// 		statusCode = 401;
+	// 		errors.push(err.message);
+	// 		break;
+	// 	case "Product Not Found":
 	// 		statusCode = 404;
 	// 		errors.push(err.name);
 	// 		break;
@@ -23,17 +26,29 @@ module.exports = (err, req, res, next) => {
 	// 		statusCode = 400;
 	// 		errors.push(err.name);
 	// 		break;
+	// 	case "User not found, Please register first":
+	// 		statusCode = 401;
+	// 		errors.push(err.name);
+	// 		break;
+	// 	case "Only admin can access this site":
+	// 		statusCode = 403;
+	// 		errors.push(err.name);
+	// 		break;
 	// 	case "SequelizeValidationError":
 	// 		statusCode = 400;
 	// 		errors.push(err.errors);
 	// 		break;
-
+	// 	case "Password and Email can't be empty": 
+	// 		statusCode = 400;
+	// 		errors.push(err.errors);
+	// 		break;
 	// 	default:
 	// 		statusCode = 500;
 	// 		errors.push("Internal Server Error");
 	// 		break;
 	// }
 
-	// res.status(statusCode).json({ errors });
-	res.status(500).json({ err });
+	// res.status(statusCode).json({errors});
+	res.status(500).json({err});
+
 };
