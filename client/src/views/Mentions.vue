@@ -311,7 +311,7 @@
 
 <script>
 export default {
-    name: 'Profile',
+    name: 'Mentions',
     data() {
         return {
 
