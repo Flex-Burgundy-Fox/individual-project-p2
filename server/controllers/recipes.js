@@ -1,4 +1,4 @@
-const { Recipe, Component, Method } = require("../models");
+const { Recipe, Component, Method, User } = require("../models");
 class Controller {
 	static addRecipe(req, res, next) {
 		let input = {
@@ -6,6 +6,7 @@ class Controller {
 			timeReq: req.body.timeReq || null,
 			servings: req.body.servings || null,
 			summary: req.body.summary || null,
+			imageUrl: req.body.imageUrl || null,
 			category: req.body.category || null,
 			status: req.body.status || null,
 			price: req.body.price || 0,
@@ -22,7 +23,7 @@ class Controller {
 
 	static addComponent(req, res, next) {
 		let input = {
-			lists: req.body.lists || null,
+			lists: req.body.lists ? JSON.stringify(req.body.lists) : null,
 			category: req.body.category || null,
 			recipeId: req.params.recipeId || null,
 		};
@@ -55,7 +56,10 @@ class Controller {
 
 	static viewRecipes(req, res, next) {
 		Recipe.findAll({
-			order: [['id', 'ASC']],
+			where: {
+				status : 'published'
+			},
+			order: [['createdAt', 'DESC']],
 		})
 			.then((result) => {
 				res.status(200).json(result);
@@ -82,10 +86,19 @@ class Controller {
 
 	static recipeDetail(req, res, next) {
 		Recipe.findOne({
-			include: [Component, Method],
 			where: {
 				id: req.params.recipeId
-			}
+			},
+			include: [ Component, Method, 
+				{ 
+					model: User, 
+					attributes : ['name', 'status'],
+					include: [{
+						model : Recipe , 
+						attributes : ['id']
+					}]
+				}
+			]
 		})
 			.then((result) => {
 				res.status(200).json(result);
@@ -130,19 +143,22 @@ class Controller {
 			timeReq: req.body.timeReq || null,
 			servings: req.body.servings || null,
 			summary: req.body.summary || null,
+			imageUrl: req.body.imageUrl || null,
 			category: req.body.category || null,
 			status: req.body.status || null,
 			price: req.body.price || 0,
+			userId: req.currentUser.id || null,
 		};
 
 		Recipe.update(input, {
 			where: {
 				id: +req.params.recipeId,
 			},
-			returning: true,
 		})
 			.then((result) => {
-				if (result[0]) res.status(200).json(result[1]);
+				if (result[0]) res.status(200).json({
+					message : 'Recipe succesfully edited'
+				});
 				else next({ name: "Recipe Not Found" });
 			})
 			.catch((err) => {
@@ -186,6 +202,27 @@ class Controller {
 		})
 			.then((result) => {
 				if (result[0]) res.status(200).json(result[1]);
+				else next({ name: "Recipe Not Found" });
+			})
+			.catch((err) => {
+				next(err);
+			});
+	}
+
+	static publishRecipe(req, res, next){
+		let input = {
+			status: req.body.status,
+		};
+
+		Recipe.update(input, {
+			where: {
+				id: +req.params.recipeId,
+			},
+		})
+			.then((result) => {
+				if (result[0]) res.status(200).json({
+					message : 'Recipe succesfully published'
+				});
 				else next({ name: "Recipe Not Found" });
 			})
 			.catch((err) => {

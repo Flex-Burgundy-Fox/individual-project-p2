@@ -20,6 +20,9 @@ module.exports = {
       summary: {
         type: Sequelize.TEXT
       },
+      imageUrl: {
+        type: Sequelize.STRING
+      },
       status: {
         type: Sequelize.STRING
       },

@@ -18,12 +18,33 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   Recipe.init({
-    name: DataTypes.STRING,
+    name: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: true
+      }
+    },
     timeReq: DataTypes.INTEGER,
     servings: DataTypes.INTEGER,
     summary: DataTypes.TEXT,
+    imageUrl: {
+      type: DataTypes.STRING,
+      validate:{
+        isUrl: {
+          args: [true],
+          msg: "Invalid Url"
+        }
+      }
+    },
     status: DataTypes.STRING,
-    category: DataTypes.STRING,
+    category: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: true
+      }
+    },
     price: {
       type: DataTypes.INTEGER,
       validate: {

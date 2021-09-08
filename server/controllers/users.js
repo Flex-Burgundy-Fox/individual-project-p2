@@ -8,6 +8,7 @@ class Controller {
 	static register(req, res, next) {
 		let input = {
 			email: req.body.email || null,
+			name: req.body.name || null,
 			password: req.body.password || null,
 		};
 
@@ -15,6 +16,7 @@ class Controller {
 			.then((result) => {
 				res.status(201).json({
 					id: result.id,
+					name: result.name,
 					email: result.email,
 				});
 			})
@@ -37,8 +39,30 @@ class Controller {
 						id: result.id,
 						email: result.email,
 					});
-					res.status(200).json({ message: "Login Succesfully", token });
+					res.status(200).json({ 
+                        message: "Login Succesfully", 
+                        token,
+                        userData : {
+                            name: result.name,
+                            email: result.email,
+                            status: result.status,
+                        } 
+                    });
 				} else next({ name: "Username or Password is wrong" });
+			})
+			.catch((err) => {
+				next(err);
+			});
+	}
+
+    static fetchUserData(req, res, next) {
+		User.findByPk(req.currentUser.id)
+			.then((result) => {
+				res.status(200).json({
+					name: result.name,
+					email: result.email,
+					status: result.status,
+				});
 			})
 			.catch((err) => {
 				next(err);
