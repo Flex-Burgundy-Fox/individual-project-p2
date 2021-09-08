@@ -6,7 +6,7 @@ const { OAuth2Client } = require('google-auth-library')
 class UserController {
 
     static login (req, res, next) {
-        const {email, password} = req.body
+        const { email, password } = req.body
         User.findOne({
             where: {
                 email
@@ -35,7 +35,7 @@ class UserController {
     }
 
     static register (req, res, next) {
-        const {first_name, last_name, email, password} = req.body
+        const { first_name, last_name, email, password } = req.body
         User.create(
             {
                 first_name,
@@ -109,8 +109,6 @@ class UserController {
            next(err)
        })
     }
-    
-
 }
 
 
