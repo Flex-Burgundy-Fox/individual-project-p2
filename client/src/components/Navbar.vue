@@ -16,6 +16,9 @@
             <router-link class="nav-item nav-link" to="/mentions" href="#"
                 ><i class="bi-bell fs-1"></i
             ></router-link>
+              <router-link class="nav-item nav-link" to="/publicchat" href="#"
+                ><i class="bi-chat-dots fs-1"></i
+            ></router-link>
             <div class="dropdown">
                 <a
                     href="#"
@@ -73,7 +76,16 @@
 </template>
 
 <script>
-export default {}
+export default {
+    name: 'Navbar',
+    methods: {
+        logout() {
+            localStorage.clear()
+            this.$router.push('/login')
+            this.$store.commit('FILL_ACCESS_TOKEN', '')
+        }
+    }
+}
 </script>
 
 <style scoped>

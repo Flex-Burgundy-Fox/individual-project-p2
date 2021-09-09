@@ -5,6 +5,7 @@ import Login from '../views/Login.vue'
 import Register from '../views/Register.vue'
 import Profile from '../views/Profile.vue'
 import Mentions from '../views/Mentions.vue'
+import PublicChat from '../views/PublicChat.vue'
 
 Vue.use(VueRouter)
 
@@ -33,11 +34,21 @@ const routes = [
     path: '/mentions',
     name: 'Mentions',
     component: Mentions
+  },
+  {
+    path: '/publicchat',
+    name: 'PublicChat',
+    component: PublicChat
   }
 ]
 
 const router = new VueRouter({
   routes
+})
+
+router.beforeEach((to, from, next) => {
+  if (to.path !== '/login' &&  to.path !== '/register' && !localStorage.getItem('access_token')) next({path : '/login'})
+  else next()
 })
 
 export default router

@@ -8,9 +8,9 @@
                         <label>last Name: </label>
                         <input type="last_name" id="last_name" v-model="last_name" required>
                         <label >Email</label>
-                        <input type="email" id="email" v-model="registerEmail" required>
+                        <input type="email" id="email" v-model="email" required>
                         <label>Password</label>
-                        <input type="password" id="password" v-model="registerPassword" required>
+                        <input type="password" id="password" v-model="password" required>
                         <button class="register-btn" type="submit">Register</button>
                     </form>
                 </div>
@@ -23,7 +23,60 @@
 </template>
 
 <script>
+import axios from 'axios'
 export default {
+    name: 'Register',
+    data () {
+        return {
+            first_name : '',
+            last_name : '',
+            email : '',
+            password : ''
+        }
+    },
+    methods: {
+        register() {
+            let first_name = this.first_name
+            let last_name = this.last_name
+            let email = this.email
+            let password = this.password
+            axios({
+                method: 'POST',
+                url: 'http://localhost:3000/register',
+                data: {
+                    first_name,
+                    last_name,
+                    email,
+                    password
+                }
+            })
+            .then(({data}) => {
+            this.$swal.fire({
+                position: 'top-end',
+                icon: 'success',
+                title: 'Your have successfully registered!',
+                showConfirmButton: false,
+                timer: 1500
+            })
+                this.$router.push({ path: '/login' })
+
+            })
+            .catch(err => {
+                this.$swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: `${err}`,
+                })
+                // console.log(err)
+            })
+            .finally(() => {
+                this.first_name = ''
+                this.last_name = ''
+                this.email = ''
+                this.password = ''
+            })
+        }
+    }
 
 }
 </script>

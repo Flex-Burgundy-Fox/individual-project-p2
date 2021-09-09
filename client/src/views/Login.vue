@@ -9,13 +9,13 @@
                     <h1 class="font-weight-bold">Login</h1>
                     <form @submit.prevent="login()">
                         <label >Email :</label>
-                        <input type="email" id="login-email" v-model="loginEmail" required>
+                        <input type="email" id="login-email" v-model="email" required>
                         <label>Password :</label>
-                        <input type="password" id="login-password" v-model="loginPassword" required>
+                        <input type="password" id="login-password" v-model="password" required>
                         <button class="login-btn" type="submit">Login</button>
                         <p class="text-center mt-3">or sign in with Google:</p>
                         <center>
-                        <GoogleLogin :params="params" :onSuccess="onSuccess" :onFailure="onFailure">Google Login</GoogleLogin>
+                        <GoogleLogin :params="paramsGoogle" :onSuccess="onSuccess" :onFailure="onFailure">Google Login</GoogleLogin>
                         </center>
                     </form>
                 </div>
@@ -24,13 +24,110 @@
 
 <script>
 import GoogleLogin from 'vue-google-login';
+import axios from 'axios'
 export default {
     name: 'Login',
+    components: {
+        GoogleLogin
+    },
     data () {
         return {
-
+            email: '',
+            password: '',
+            paramsGoogle: {
+                client_id: "385717324016-tkg6dtop4po7dfreko29f9mai7g7j2rg.apps.googleusercontent.com"
+            },
         }
     },
+    methods: {
+        login() {
+            let email = this.email
+            let password = this.password
+            axios({
+                method: 'POST',
+                url: 'http://localhost:3000/login',
+                data: {
+                    email,
+                    password
+                }
+            })
+            .then(({data}) => {
+            const Toast = this.$swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                toast.addEventListener('mouseenter', this.$swal.stopTimer)
+                toast.addEventListener('mouseleave', this.$swal.resumeTimer)
+                }
+            })
+
+            Toast.fire({
+                icon: 'success',
+                title: 'Signed in successfully'
+            })
+                localStorage.setItem('access_token', data.access_token)
+                this.$router.push({ path: '/' })
+                this.$store.commit('FILL_ACCESS_TOKEN', data.access_token)
+           })
+           .catch(err => {
+               this.$swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Wrong Email / Password!',
+                })
+               console.log(err)
+           })
+           .finally(() => {
+               this.email = ''
+               this.password = ''
+           })
+        },
+        onSuccess(googleUser) {
+            // console.log(googleUser);
+             let token = googleUser.getAuthResponse().id_token;
+            //  console.log(token)
+             axios({
+			    method: 'POST',
+			    url: 'http://localhost:3000/login-google',
+                data: {
+                    token: token
+                },
+		    })
+			.then(({ data }) => {
+                const Toast = this.$swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', this.$swal.stopTimer)
+                    toast.addEventListener('mouseleave', this.$swal.resumeTimer)
+                    }
+                })
+
+                Toast.fire({
+                    icon: 'success',
+                    title: 'Signed in successfully with Google'
+                })
+                // console.log(data)
+			    localStorage.setItem('access_token', data.access_token)
+                this.$router.push({ path: '/' })
+                this.$store.commit('FILL_ACCESS_TOKEN', data.access_token)
+			})
+			.catch(err =>  console.log(err))
+ 
+            // This only gets the user information: id, name, imageUrl and email
+            // console.log(googleUser.getBasicProfile());
+        },
+        onFailure(err) {
+            // console.log('halo dari failure')
+            console.log(err)
+        }
+    }
     
 }
 </script>

@@ -2,7 +2,7 @@
   "development": {
     "username": "postgres",
     "password": "postgres",
-    "database": "IndividualProjectH8_Phase2_Anon",
+    "database": "anon_db",
     "host": "localhost",
     "dialect": "postgres"
   }
