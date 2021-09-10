@@ -3,8 +3,6 @@ import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Login from '../views/Login.vue'
 import Register from '../views/Register.vue'
-import Profile from '../views/Profile.vue'
-import Mentions from '../views/Mentions.vue'
 import PublicChat from '../views/PublicChat.vue'
 
 Vue.use(VueRouter)
@@ -26,16 +24,6 @@ const routes = [
     component: Register
   },
   {
-    path: '/profile',
-    name: 'Profile',
-    component: Profile
-  },
-  {
-    path: '/mentions',
-    name: 'Mentions',
-    component: Mentions
-  },
-  {
     path: '/publicchat',
     name: 'PublicChat',
     component: PublicChat
@@ -47,7 +35,7 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  if (to.path !== '/login' &&  to.path !== '/register' && !localStorage.getItem('access_token')) next({path : '/login'})
+  if (to.path !== '/login' && to.path !== '/register' && !localStorage.getItem('access_token')) next({path : '/login'})
   else next()
 })
 

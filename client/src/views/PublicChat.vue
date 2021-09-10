@@ -1,12 +1,12 @@
 <template>
     <div class="container">
-        <h3>CHAT ANONIMOUSLY</h3>
+        <h3>PUBLIC CHAT YET STILL ANONYMOUS</h3>
         <div class="messaging">
             <div class="inbox_msg">
                 <div class="mesgs">
                     <div v-for="(msg, i) in messages" :key="i" class="sent_msg">
+                        <!-- <p>{{ this.UserId }}</p> -->
                         <h5>{{ msg.message }}</h5>
-                        <p>{{ msg.time }}</p>
                     </div>
                     <div class="type_msg">
                         <div class="input_msg_write">
@@ -39,7 +39,7 @@ export default {
         return {
             message: '',
             messages: [],
-            room: '',
+            // UserId: localStorage.getItem('user_id'),
         }
     },
     methods: {

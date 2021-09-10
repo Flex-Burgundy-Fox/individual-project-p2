@@ -42,7 +42,7 @@ export default {
             let password = this.password
             axios({
                 method: 'POST',
-                url: 'http://localhost:3000/register',
+                url: 'https://anon-app-h8-phase2.herokuapp.com/register',
                 data: {
                     first_name,
                     last_name,

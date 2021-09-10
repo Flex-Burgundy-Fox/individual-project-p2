@@ -1,63 +1,97 @@
 <template>
-  <div class="container-fluid gedf-wrapper">
+    <div class="container-fluid gedf-wrapper">
         <div class="row">
             <div class="col-md-3">
                 <div class="card">
                     <div class="card-body">
-                      <img class="rounded-circle" width="100" src="https://robohash.org/IS5.png" alt="">
-                        <div class="h5">@Anon1</div>
+                        <img
+                            class="rounded-circle"
+                            width="100"
+                            :src="this.UserAvatar"
+                            alt=""
+                        />
+                        <div class="h5">@Anon{{this.UserId}}</div>
                     </div>
                     <ul class="list-group list-group-flush">
-                        <li class="list-group-item">Vestibulum at eros</li>
+                        <li class="list-group-item">Bio: Vestibulum at eros</li>
                     </ul>
                 </div>
             </div>
             <div class="col-md-6 gedf-main">
-
                 <!--- \\\\\\\Post-->
                 <div class="card gedf-card">
                     <div class="card-header">
-                        <ul class="nav nav-tabs card-header-tabs" id="myTab" role="tablist">
+                        <ul
+                            class="nav nav-tabs card-header-tabs"
+                            id="myTab"
+                            role="tablist"
+                        >
                             <li class="nav-item">
-                                <a class="nav-link active" id="posts-tab" data-toggle="tab" href="#posts" role="tab" aria-controls="posts" aria-selected="true">Share something</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" id="images-tab" data-toggle="tab" role="tab" aria-controls="images" aria-selected="false" href="#images">Images</a>
+                                <p
+                                    class="nav-link active"
+                                    id="posts-tab"
+                                    data-toggle="tab"
+                                    href="#posts"
+                                    role="tab"
+                                    aria-controls="posts"
+                                    aria-selected="true"
+                                >
+                                    Blablas at something
+                                </p>
                             </li>
                         </ul>
                     </div>
                     <div class="card-body">
                         <div class="tab-content" id="myTabContent">
-                            <div class="tab-pane fade show active" id="posts" role="tabpanel" aria-labelledby="posts-tab">
+                            <div
+                                class="tab-pane fade show active"
+                                id="posts"
+                                role="tabpanel"
+                                aria-labelledby="posts-tab"
+                            >
                                 <div class="form-group">
-                                    <label class="sr-only" for="message">post</label>
-                                    <textarea class="form-control" id="message" rows="3" placeholder="What are you thinking?"></textarea>
+                                    <form @submit.prevent="addBlablas()">
+                                        <textarea
+                                            class="form-control"
+                                            v-model="contents"
+                                            id="message"
+                                            rows="3"
+                                            placeholder="What are you thinking?"
+                                        ></textarea>
+                                        <button
+                                            type="submit"
+                                            class="btn btn-primary"
+                                        >
+                                            share
+                                        </button>
+                                    </form>
                                 </div>
-
                             </div>
-                            <div class="tab-pane fade" id="images" role="tabpanel" aria-labelledby="images-tab">
-                                <div class="form-group">
-                                    <div class="custom-file">
-                                        <input type="file" class="custom-file-input" id="customFile">
-                                        <label class="custom-file-label" for="customFile">Upload image</label>
-                                    </div>
-                                </div>
+                            <div
+                                class="tab-pane fade"
+                                id="images"
+                                role="tabpanel"
+                                aria-labelledby="images-tab"
+                            >
                                 <div class="py-4"></div>
                             </div>
                         </div>
                         <div class="btn-toolbar justify-content-between">
+                            <div class="btn-group"></div>
                             <div class="btn-group">
-                                <button type="submit" class="btn btn-primary">share</button>
-                            </div>
-                            <div class="btn-group">
-                                <button id="btnGroupDrop1" type="button" class="btn btn-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-                                    aria-expanded="false">
-                                    <i class="fa fa-globe"></i>
-                                </button>
-                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="btnGroupDrop1">
-                                    <a class="dropdown-item" href="#"><i class="fa fa-globe"></i> Public</a>
-                                    <a class="dropdown-item" href="#"><i class="fa fa-users"></i> Friends</a>
-                                    <a class="dropdown-item" href="#"><i class="fa fa-user"></i> Just me</a>
+                                <div
+                                    class="dropdown-menu dropdown-menu-right"
+                                    aria-labelledby="btnGroupDrop1"
+                                >
+                                    <a class="dropdown-item" href="#"
+                                        ><i class="fa fa-globe"></i> Public</a
+                                    >
+                                    <a class="dropdown-item" href="#"
+                                        ><i class="fa fa-users"></i> Friends</a
+                                    >
+                                    <a class="dropdown-item" href="#"
+                                        ><i class="fa fa-user"></i> Just me</a
+                                    >
                                 </div>
                             </div>
                         </div>
@@ -66,165 +100,70 @@
                 <!-- Post /////-->
 
                 <!--- \\\\\\\Post-->
-                <div class="card gedf-card">
+                <div v-for="blabla in blablas"
+                :key="blabla.id" class="card gedf-card">
                     <div class="card-header">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div class="mr-2">
-                                    <img class="rounded-circle" width="45" src="https://robohash.org/IS5.png" alt="">
-                                </div>
+                        <div
+                            class="d-flex justify-content-between align-items-center"
+                        >
+                            <div
+                                class="d-flex justify-content-between align-items-center"
+                            >
                                 <div class="ml-2">
-                                    <div class="h5 m-0">@Anon1</div>
-                                    <div class="h7 text-muted">Miracles Lee Cross</div>
+                                    <div class="h5 m-0">@Anon{{blabla.UserId}}</div>
                                 </div>
                             </div>
                             <div>
                                 <div class="dropdown">
-                                    <button class="btn btn-link dropdown-toggle" type="button" id="gedf-drop1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <button
+                                        class="btn btn-link dropdown-toggle"
+                                        type="button"
+                                        id="gedf-drop1"
+                                        data-toggle="dropdown"
+                                        aria-haspopup="true"
+                                        aria-expanded="false"
+                                    >
                                         <i class="fa fa-ellipsis-h"></i>
                                     </button>
-                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="gedf-drop1">
-                                        <div class="h6 dropdown-header">Configuration</div>
-                                        <a class="dropdown-item" href="#">Save</a>
-                                        <a class="dropdown-item" href="#">Hide</a>
-                                        <a class="dropdown-item" href="#">Report</a>
+                                    <div
+                                        class="dropdown-menu dropdown-menu-right"
+                                        aria-labelledby="gedf-drop1"
+                                    >
+                                        <div class="h6 dropdown-header">
+                                            Configuration
+                                        </div>
+                                        <a class="dropdown-item" href="#"
+                                            >Save</a
+                                        >
+                                        <a class="dropdown-item" href="#"
+                                            >Hide</a
+                                        >
+                                        <a class="dropdown-item" href="#"
+                                            >Report</a
+                                        >
                                     </div>
                                 </div>
                             </div>
                         </div>
-
                     </div>
                     <div class="card-body">
-                        <div class="text-muted h7 mb-2"> <i class="fa fa-clock-o"></i>10 min ago</div>
-                        <a class="card-link" href="#">
-                            <h5 class="card-title">Lorem ipsum dolor sit amet, consectetur adip.</h5>
-                        </a>
-
+                        <div class="text-muted h7 mb-2">
+                            <i class="fa fa-clock-o"></i>{{blabla.createdAt.toLocaleString()}}
+                        </div>
                         <p class="card-text">
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo recusandae nulla rem eos ipsa praesentium esse magnam nemo dolor
-                            sequi fuga quia quaerat cum, obcaecati hic, molestias minima iste voluptates.
+                            {{blabla.contents}}
                         </p>
                     </div>
                     <div class="card-footer">
-                        <a href="#" class="card-link"><i class="fa fa-gittip"></i> Like</a>
-                        <a href="#" class="card-link"><i class="fa fa-comment"></i> Comment</a>
-                        <a href="#" class="card-link"><i class="fa fa-mail-forward"></i> Share</a>
+                        <a href="#" @click.prevent="mention(blabla.UserId)" class="card-link"
+                            ><i class="fa fa-at"></i> Mention</a
+                        >
+                        <a href="#" class="card-link" @click.prevent="deleteBlablas(blabla.id)"
+                            ><i class="fa fa-times-circle"></i> Delete</a
+                        >
                     </div>
                 </div>
                 <!-- Post /////-->
-
-
-                <!--- \\\\\\\Post-->
-                <div class="card gedf-card">
-                    <div class="card-header">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div class="mr-2">
-                                    <img class="rounded-circle" width="45" src="https://robohash.org/IS5.png" alt="">
-                                </div>
-                                <div class="ml-2">
-                                    <div class="h5 m-0">@Anon1</div>
-                                    <div class="h7 text-muted">Miracles Lee Cross</div>
-                                </div>
-                            </div>
-                            <div>
-                                <div class="dropdown">
-                                    <button class="btn btn-link dropdown-toggle" type="button" id="gedf-drop1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <i class="fa fa-ellipsis-h"></i>
-                                    </button>
-                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="gedf-drop1">
-                                        <div class="h6 dropdown-header">Configuration</div>
-                                        <a class="dropdown-item" href="#">Save</a>
-                                        <a class="dropdown-item" href="#">Hide</a>
-                                        <a class="dropdown-item" href="#">Report</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="card-body">
-                        <div class="text-muted h7 mb-2"> <i class="fa fa-clock-o"></i> 10 min ago</div>
-                        <a class="card-link" href="#">
-                            <h5 class="card-title"> Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit consectetur
-                                deserunt illo esse distinctio.</h5>
-                        </a>
-
-                        <p class="card-text">
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Magnam omnis nihil, aliquam est, voluptates officiis iure soluta
-                            alias vel odit, placeat reiciendis ut libero! Quas aliquid natus cumque quae repellendus. Lorem
-                            ipsum dolor sit amet consectetur adipisicing elit. Ipsa, excepturi. Doloremque, reprehenderit!
-                            Quos in maiores, soluta doloremque molestiae reiciendis libero expedita assumenda fuga quae.
-                            Consectetur id molestias itaque facere? Hic!
-                        </p>
-                        <div>
-                            <span class="badge badge-primary">JavaScript</span>
-                            <span class="badge badge-primary">Android</span>
-                            <span class="badge badge-primary">PHP</span>
-                            <span class="badge badge-primary">Node.js</span>
-                            <span class="badge badge-primary">Ruby</span>
-                            <span class="badge badge-primary">Paython</span>
-                        </div>
-                    </div>
-                    <div class="card-footer">
-                        <a href="#" class="card-link"><i class="fa fa-gittip"></i> Like</a>
-                        <a href="#" class="card-link"><i class="fa fa-comment"></i> Comment</a>
-                        <a href="#" class="card-link"><i class="fa fa-mail-forward"></i> Share</a>
-                    </div>
-                </div>
-                <!-- Post /////-->
-
-
-                <!--- \\\\\\\Post-->
-                <div class="card gedf-card">
-                    <div class="card-header">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div class="mr-2">
-                                    <img class="rounded-circle" width="45" src="https://robohash.org/IS5.png" alt="">
-                                </div>
-                                <div class="ml-2">
-                                    <div class="h5 m-0">@Anon1</div>
-                                    <div class="h7 text-muted">Miracles Lee Cross</div>
-                                </div>
-                            </div>
-                            <div>
-                                <div class="dropdown">
-                                    <button class="btn btn-link dropdown-toggle" type="button" id="gedf-drop1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <i class="fa fa-ellipsis-h"></i>
-                                    </button>
-                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="gedf-drop1">
-                                        <div class="h6 dropdown-header">Configuration</div>
-                                        <a class="dropdown-item" href="#">Save</a>
-                                        <a class="dropdown-item" href="#">Hide</a>
-                                        <a class="dropdown-item" href="#">Report</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="card-body">
-                        <div class="text-muted h7 mb-2"> <i class="fa fa-clock-o"></i> Hace 40 min</div>
-                        <a class="card-link" href="#">
-                            <h5 class="card-title">Totam non adipisci hic! Possimus ducimus amet, dolores illo ipsum quos
-                                cum.</h5>
-                        </a>
-
-                        <p class="card-text">
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam sunt fugit reprehenderit consectetur exercitationem odio,
-                            quam nobis? Officiis, similique, harum voluptate, facilis voluptas pariatur dolorum tempora sapiente
-                            eius maxime quaerat.
-                            <a href="https://mega.nz/#!1J01nRIb!lMZ4B_DR2UWi9SRQK5TTzU1PmQpDtbZkMZjAIbv97hU" target="_blank">https://mega.nz/#!1J01nRIb!lMZ4B_DR2UWi9SRQK5TTzU1PmQpDtbZkMZjAIbv97hU</a>
-                        </p>
-                    </div>
-                    <div class="card-footer">
-                        <a href="#" class="card-link"><i class="fa fa-gittip"></i> Like</a>
-                        <a href="#" class="card-link"><i class="fa fa-comment"></i> Comment</a>
-                        <a href="#" class="card-link"><i class="fa fa-mail-forward"></i> Share</a>
-                    </div>
-                </div>
-              
             </div>
         </div>
     </div>
@@ -232,39 +171,111 @@
 
 <script>
 // @ is an alias to /src
-
-
+import axios from 'axios'
 export default {
-  name: 'Home',
+    name: 'Home',
+    data() {
+        return {
+            contents: '',
+            UserAvatar: localStorage.getItem('user_avatar'),
+            UserId: localStorage.getItem('user_id')
+        }
+    },
+    methods: {
+        addBlablas() {
+            // console.log(this.contents)
+            axios({
+                method: 'POST',
+                url: 'http://localhost:3000/blablas',
+                headers: {
+                    access_token : localStorage.getItem('access_token')
+                },
+                data: {
+                    contents: this.contents
+                } 
+            })
+            .then(() => {
+                this.$store.dispatch('showBlablas')
+            })
+            .catch(err => {
+                this.$swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: `error: {${err}}`,
+                })
+                // console.log(err)
+            })
+            .finally(() => {
+                this.contents = ''
+            })
+        },
+        mention(UserId) {
+            this.contents = `@Anon${UserId}`
+        },
+        deleteBlablas(id) {
+                this.$swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                this.$store.dispatch('deleteBlablas', id)
+                this.$swal.fire(
+                    'Deleted!',
+                    'Your file has been deleted.',
+                    'success'
+                )
+                }
+            })
+        }
+    },
+    computed: {
+        blablas() {
+            return this.$store.state.blablas
+        },
+        UserId() {
+            return this.$store.state.UserId
+        },
+        UserAvatar() {
+            return this.$store.state.UserAvatar
+        }
+    },
+    created() {
+        this.$store.dispatch('showBlablas')
+    }
 }
 </script>
 
 <style scoped>
 body {
-            background-color: #eeeeee;
-        }
+    background-color: #eeeeee;
+}
 
-        .h7 {
-            font-size: 0.8rem;
-        }
+.h7 {
+    font-size: 0.8rem;
+}
 
-        .gedf-wrapper {
-            margin-top: 0.97rem;
-        }
+.gedf-wrapper {
+    margin-top: 0.97rem;
+}
 
-        @media (min-width: 992px) {
-            .gedf-main {
-                padding-left: 4rem;
-                padding-right: 4rem;
-            }
-            .gedf-card {
-                margin-bottom: 2.77rem;
-            }
-        }
+@media (min-width: 992px) {
+    .gedf-main {
+        padding-left: 4rem;
+        padding-right: 4rem;
+    }
+    .gedf-card {
+        margin-bottom: 2.77rem;
+    }
+}
 
-        /**Reset Bootstrap*/
-        .dropdown-toggle::after {
-            content: none;
-            display: none;
-        }
+/**Reset Bootstrap*/
+.dropdown-toggle::after {
+    content: none;
+    display: none;
+}
 </style>

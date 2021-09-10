@@ -10,13 +10,25 @@
         /></a>
 
         <div class="navbar-nav">
-            <router-link class="nav-item nav-link" to="/" href="#"
+            <router-link
+                class="nav-item nav-link"
+                v-if="access_token"
+                to="/"
+                href="#"
                 ><i class="bi-house fs-1"></i
             ></router-link>
-            <router-link class="nav-item nav-link" to="/mentions" href="#"
+            <!-- <router-link
+                class="nav-item nav-link"
+                v-if="access_token"
+                to="/mentions"
+                href="#"
                 ><i class="bi-bell fs-1"></i
-            ></router-link>
-              <router-link class="nav-item nav-link" to="/publicchat" href="#"
+            ></router-link> -->
+            <router-link
+                class="nav-item nav-link"
+                v-if="access_token"
+                to="/publicchat"
+                href="#"
                 ><i class="bi-chat-dots fs-1"></i
             ></router-link>
             <div class="dropdown">
@@ -33,19 +45,19 @@
                     class="dropdown-menu text-small shadow"
                     aria-labelledby="dropdownUser3"
                 >
-                    <li>
+                    <!-- <li>
                         <router-link
-                        class="nav-item nav-link" 
-                      
-                        to="/profile"
-                        href="#"
-                        >YOUR PROFILE</router-link
+                            class="nav-item nav-link"
+                            v-if="access_token"
+                            to="/profile"
+                            href="#"
+                            >YOUR PROFILE</router-link
                         >
-                    </li>
+                    </li> -->
                     <li>
                         <router-link
                             class="nav-item nav-link"
-                            
+                            v-if="!access_token"
                             to="/login"
                             href="#"
                             >LOGIN</router-link
@@ -55,7 +67,7 @@
                         <router-link
                             class="nav-item nav-link"
                             to="/register"
-                           
+                            v-if="!access_token"
                             href="#"
                             >REGISTER</router-link
                         >
@@ -64,7 +76,7 @@
                         <a
                             class="nav-item nav-link"
                             @click="logout()"
-                          
+                            v-if="access_token"
                             href="#"
                             >LOGOUT</a
                         >
@@ -80,11 +92,23 @@ export default {
     name: 'Navbar',
     methods: {
         logout() {
+            this.$swal.fire({
+                position: 'top-end',
+                icon: 'success',
+                title: 'You have successfully logged out!',
+                showConfirmButton: false,
+                timer: 1500
+            })
             localStorage.clear()
             this.$router.push('/login')
             this.$store.commit('FILL_ACCESS_TOKEN', '')
+        },
+    },
+    computed: {
+        access_token() {
+            return this.$store.state.access_token
         }
-    }
+    },
 }
 </script>
 

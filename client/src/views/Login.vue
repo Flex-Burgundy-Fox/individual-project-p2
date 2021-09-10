@@ -35,7 +35,7 @@ export default {
             email: '',
             password: '',
             paramsGoogle: {
-                client_id: "385717324016-tkg6dtop4po7dfreko29f9mai7g7j2rg.apps.googleusercontent.com"
+                client_id: "385717324016-upu14jdk1hpcf9tc5sf9oicifete35p6.apps.googleusercontent.com"
             },
         }
     },
@@ -45,7 +45,7 @@ export default {
             let password = this.password
             axios({
                 method: 'POST',
-                url: 'http://localhost:3000/login',
+                url: 'https://anon-app-h8-phase2.herokuapp.com/login',
                 data: {
                     email,
                     password
@@ -71,6 +71,9 @@ export default {
                 localStorage.setItem('access_token', data.access_token)
                 this.$router.push({ path: '/' })
                 this.$store.commit('FILL_ACCESS_TOKEN', data.access_token)
+                localStorage.setItem('user_avatar', data.avatar)
+                localStorage.setItem('user_id', data.id)
+                // this.$store.commit('GET_USER_AVATAR', data.avatar )
            })
            .catch(err => {
                this.$swal.fire({
@@ -91,12 +94,13 @@ export default {
             //  console.log(token)
              axios({
 			    method: 'POST',
-			    url: 'http://localhost:3000/login-google',
+			    url: 'https://anon-app-h8-phase2.herokuapp.com/login-google',
                 data: {
                     token: token
                 },
 		    })
 			.then(({ data }) => {
+                // console.log(data)
                 const Toast = this.$swal.mixin({
                     toast: true,
                     position: 'top-end',
@@ -117,6 +121,9 @@ export default {
 			    localStorage.setItem('access_token', data.access_token)
                 this.$router.push({ path: '/' })
                 this.$store.commit('FILL_ACCESS_TOKEN', data.access_token)
+                localStorage.setItem('user_avatar', data.avatar)
+                localStorage.setItem('user_id', data.id)
+                // this.$store.commit('GET_USER', { avatar : data.avatar, UserId: data.UserId } ) 
 			})
 			.catch(err =>  console.log(err))
  
