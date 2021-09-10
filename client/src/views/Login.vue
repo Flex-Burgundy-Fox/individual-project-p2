@@ -67,7 +67,7 @@ import Toasted from 'vue-toasted'
 
 Vue.use(Toasted)
 
-let path = "http://localhost:3000/";
+let path = "https://coke-project.herokuapp.com/";
 
 export default {
   name: "Login",
@@ -82,8 +82,7 @@ export default {
         password: "",
       },
       params: {
-        client_id:
-          "480202074265-9oec66eknc8b7hpuh63i08f5sjoj992o.apps.googleusercontent.com",
+        client_id: "480202074265-l80rta3j4bfleq5pna4e3tqolgt0htaq.apps.googleusercontent.com",
       },
     };
   },

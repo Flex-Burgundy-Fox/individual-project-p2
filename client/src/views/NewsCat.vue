@@ -55,8 +55,6 @@ export default {
   mounted() {
     console.log(this.news, "here");
   },
-  created() {
-  },
 };
 </script>
 

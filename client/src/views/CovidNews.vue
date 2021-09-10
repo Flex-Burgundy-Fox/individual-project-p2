@@ -19,7 +19,7 @@
               data-mdb-ripple-color="light"
             >
               <img :src="data.urlToImage" class="img-fluid" />
-              <a :href="news.url">
+              <a :href="data.url">
                 <div
                   class="mask"
                   style="background-color: rgba(251, 251, 251, 0.15)"
@@ -36,7 +36,7 @@
               <strong>{{ data.title }}</strong>
             </h4>
             <p class="text-muted">{{ data.description }}</p>
-            <a :href="news.url">>> read more </a>
+            <a :href="data.url">>> read more </a>
           </div>
         </div>
       </div>

@@ -1,9 +1,7 @@
+const router = require('express').Router()
 const Covid = require('../Controller/index')
 const UserC = require('../Controller/User')
 const { Authentication } = require('../middleware/auth')
-const router = require('express').Router()
-
-
 
 router.post('/users/login', UserC.login)
 router.post('/users/login-google', UserC.googleLogin)

@@ -7,7 +7,7 @@ import Toasted from 'vue-toasted'
 Vue.use(Toasted)
 Vue.use(Vuex)
 
-let path = 'http://localhost:3000/'
+let path = 'https://coke-project.herokuapp.com/'
 
 export default new Vuex.Store({
   state: {
