@@ -9,7 +9,6 @@ const router = require('./routers/index')
 const io = require('socket.io')(server)
 const messages = require('./messages')
 
-
 io.on('connect', function(socket) {
     console.log(socket.id)
     socket.emit('init', messages)
