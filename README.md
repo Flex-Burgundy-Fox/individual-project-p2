@@ -4,6 +4,10 @@ Gourmet Tavern
 
 ## Description
 
+Heroku Server = https://gourmet-tavern.herokuapp.com/
+
+Firebase Client = https://gourmet-tavern.web.app/
+
 An in-depth paragraph about your project and overview of use.
 
 ## Getting Started
