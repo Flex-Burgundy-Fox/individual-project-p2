@@ -13,10 +13,6 @@ module.exports = {
         notEmpty: true,
         notNull: true
       },
-      pictures: {
-        type: Sequelize.STRING,
-        isUrl: true
-      },
       UserId: {
         type: Sequelize.INTEGER,
         references: {

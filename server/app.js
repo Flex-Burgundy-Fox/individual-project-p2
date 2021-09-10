@@ -11,7 +11,7 @@ const messages = require('./messages')
 
 
 io.on('connect', function(socket) {
-    // console.log(socket.id)
+    console.log(socket.id)
     socket.emit('init', messages)
     socket.on('newMessage', (message) => {
         // console.log(message)

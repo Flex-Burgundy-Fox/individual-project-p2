@@ -15,7 +15,6 @@ module.exports = (sequelize, DataTypes) => {
   };
   Blabla.init({
     contents: DataTypes.TEXT,
-    pictures: DataTypes.STRING,
     UserId: DataTypes.INTEGER
   }, {
     sequelize,

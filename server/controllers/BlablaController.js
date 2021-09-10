@@ -3,7 +3,11 @@ const { Blabla } = require('../models')
 class BlablaController {
 
     static showBlablas (req, res, next) {
-        Blabla.findAll()
+        Blabla.findAll({
+            order: [ 
+                ['createdAt', 'DESC'] 
+            ]
+        })
         .then((data) => {
             res.status(200).json({
                 data : data
@@ -15,11 +19,10 @@ class BlablaController {
     }
 
     static createBlabla (req, res, next) {
-        let { contents, pictures } = req.body
+        let { contents} = req.body
 
         Blabla.create({
             contents, 
-            pictures,
             UserId: req.currentUser.id
         })
         .then((data) => {
@@ -71,8 +74,8 @@ class BlablaController {
     }
 
     static deleteBlabla (req, res, next) {
-        const id = +req.params.id
-
+        let id = +req.params.id
+        // console.log(id)
         Blabla.destroy({
             where: {
                 id : id
