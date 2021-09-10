@@ -8,11 +8,11 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      lists: {
+      ingredients: {
         type: Sequelize.JSON
       },
-      category: {
-        type: Sequelize.STRING
+      tools: {
+        type: Sequelize.JSON
       },
       createdAt: {
         allowNull: false,

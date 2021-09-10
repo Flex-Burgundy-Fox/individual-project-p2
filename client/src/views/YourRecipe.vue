@@ -1,5 +1,8 @@
 <template>
 <div class="container-sm mt-5">
+    <div v-if='!originalRecipes.length' class="fst-italic text-muted">
+        <h4>Your recipe is empty, feel free to make one :) </h4>
+    </div>
     <div id='recipeCard_long' v-for='recipe in originalRecipes' :key="recipe.id" class="d-flex justify-content-between p-0" >
         <div class="d-flex">
             <img @click='$router.push("/recipe/" + recipe.id)' type='button' class='rounded float-start' :src="recipe.imageUrl" alt="No Picture" style="width:125px;">
@@ -42,7 +45,7 @@ export default {
             })
                 .then(({data}) => {
                     console.log(data); // message toasted
-                    this.$store.dispatch('fetchOriginalRecipe')
+                    this.$store.dispatch('fetchUserRecipe')
                     this.$store.dispatch('seedGourmetTavern')
                     // this.$router.push('/userRecipe')
                 }).catch((err) => {
@@ -56,13 +59,16 @@ export default {
             })
                 .then(({data}) => {
                     console.log(data); // message toasted
-                    this.$store.dispatch('fetchOriginalRecipe')
+                    this.$store.dispatch('fetchUserRecipe')
                     this.$store.dispatch('seedGourmetTavern')
                     // this.$router.push('/userRecipe')
                 }).catch((err) => {
                     console.log(err);
                 });
         }
+    },
+    mounted(){
+        this.$store.dispatch('fetchUserRecipe')
     }
 }
 </script>

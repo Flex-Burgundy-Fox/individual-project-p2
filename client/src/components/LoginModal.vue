@@ -22,7 +22,8 @@
           </div>
           <div class="modal-footer">
             <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button> -->
-            <button type="button" class="btn btn-primary mx-auto" @click="login" data-bs-dismiss="modal">Login</button>
+			<GoogleLogin class="btn btn-primary mx-auto" :params="params" :onSuccess="onSuccess" :onFailure="onFailure" data-bs-dismiss="modal">Login with Google</GoogleLogin>
+            <button type="button" class="btn btn-primary mx-auto" @click="login" data-bs-dismiss="modal">Login with Email</button>
           </div>
         </div>
     </div>
@@ -31,32 +32,89 @@
 </template>
 
 <script>
+import GoogleLogin from 'vue-google-login';
+
 export default {
     name: 'LoginModal',
+    components: {GoogleLogin},
     data(){
         return{
             user: {
                 email : '',
                 password: ''
-            }
+            },
+            params: {
+                client_id: process.env.VUE_APP_GOOGLE_CLIENT_ID
+            },
         }
     },
     methods:{
         login(){
             this.$store.dispatch('login', this.user)
             .then(({data}) => {
+				this.$toasted.success(data.message, {
+					icon: 'check',
+					action: {
+						text: 'Close',
+						onClick: (e, toastObject) => {
+							toastObject.goAway(0);
+						}
+					},
+					duration: 3000
+				})
                 localStorage.access_token = data.token
                 this.$store.commit('SET_TOKEN', data.token)
                 this.$store.commit('SET_USERDATA', data.userData)
-                this.$store.dispatch('fetchOrginalRecipe')
+                this.$store.dispatch('fetchUserRecipe')
+                this.$store.dispatch('fetchPurchasedRecipe')
                 this.user = {
                   email : '',
                   password: ''
                 }
             }).catch((err) => {
+              // this.$toasted.error(response.data.message, {
+              //     icon: 'warning',
+              //     action: {
+              //         text: 'Close',
+              //         onClick: (e, toastObject) => {
+              //             toastObject.goAway(0);
+              //         }
+              //     },
+              //     duration: 5000
+              // })
                 console.log(err)
             });
-        }
+        },
+        onSuccess(googleUser) { 
+			let token = googleUser.getAuthResponse().id_token;
+			this.$store.dispatch('loginGoogle', {token})
+			.then(({ data }) => {
+				this.$toasted.success('Login SuccessFully', {
+                  icon: 'check',
+                  action: {
+                      text: 'Close',
+                      onClick: (e, toastObject) => {
+                          toastObject.goAway(0);
+                      }
+                  },
+                  duration: 3000
+              	})
+				localStorage.access_token = data.token
+				this.$store.commit('SET_TOKEN', data.token)
+				this.$store.commit('SET_USERDATA', data.userData)
+				this.$store.dispatch('fetchUserRecipe')
+				this.$store.dispatch('fetchPurchasedRecipe')
+				this.user = {
+				email : '',
+				password: ''
+				}
+			})
+			.catch(err => console.log(err.response.data))
+        },
+
+		onFailure(err){
+			console.log(err);
+		}
     },
 }
 </script>

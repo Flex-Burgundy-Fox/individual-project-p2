@@ -4,10 +4,13 @@ import Home from '../views/Home.vue'
 import RecipeDetail from '../views/RecipeDetail.vue'
 import Profile from '../views/Profile.vue'
 import YourRecipe from '../views/YourRecipe.vue'
+import PurchasedRecipe from '../views/PurchasedRecipe.vue'
 import FormRecipe from '../views/FormRecipe.vue'
 import FormIntro from '../views/FormIntro.vue'
 import FormComponents from '../views/FormComponents.vue'
 import FormMethods from '../views/FormMethods.vue'
+import RecipeNotFound from '../views/RecipeNotFound.vue'
+import SearchRecipe from '../views/SearchRecipe.vue'
 
 Vue.use(VueRouter)
 
@@ -23,6 +26,11 @@ const routes = [
     component: RecipeDetail
   },
   {
+    path: '/search',
+    name: 'SearchRecipe',
+    component: SearchRecipe
+  },
+  {
     path: '/profile',
     component: Profile,
     children: [
@@ -31,11 +39,11 @@ const routes = [
         name: 'Profile',
         component: YourRecipe
       },
-      // {
-      //   path: '/purchased',
-      //   name: 'Profile',
-      //   component: YourRecipe
-      // },
+      {
+        path: 'purchased',
+        name: 'PurchasedRecipe',
+        component: PurchasedRecipe
+      },
     ]
   },
   {
@@ -65,28 +73,33 @@ const routes = [
     children: [
       {
         path: ':recipeId',
-        name: 'FormRecipe',
+        name: 'FormEditRecipe',
         component: FormIntro
       },
       {
         path: 'components/:recipeId',
-        name: 'FormComponents',
+        name: 'FormEditComponents',
         component: FormComponents
       },
       {
         path: 'methods/:recipeId',
-        name: 'FormMethods',
+        name: 'FormEditMethods',
         component: FormMethods
       },
     ]
   },
   {
+    path: '/notFound',
+    name: 'RecipeNotFound',
+    component: RecipeNotFound
+  },
+  {
     path: '*',
-    name: 'About',
+    name: 'PageNotFound',
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+    component: () => import(/* webpackChunkName: "about" */ '../views/PageNotFound.vue')
   }
 ]
 
@@ -97,9 +110,8 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  let prevPath = window.location.pathname // jika bingung dengan "window.location.pathname" disini bisa juga menggunakan from.name atau from.path
-
-  if( (to.name == 'Profile' || to.name == 'FormRecipe' || to.name == 'FormComponents' || to.name == 'FormMethods') && !localStorage.getItem('access_token')) {
+  // let prevPath = from.name // jika bingung dengan "window.location.pathname" disini bisa juga menggunakan from.name atau from.path
+  if( (to.name !== 'Home' && to.name !== 'RecipeDetail'  && to.name !== 'SearchRecipe' && to.name !== 'PageNotFound' && to.name !== 'RecipeNotFound') && !localStorage.getItem('access_token')) {
     Vue.toasted.info('Please Login First', {
       icon: 'info',
       action: {
@@ -110,11 +122,8 @@ router.beforeEach((to, from, next) => {
       },
       duration: 5000
     })
-    // if(prevPath == '/userProfile') prevPath = '/'
-    // next({ path: prevPath })
-    next({ path: '/' })
+    if(from.name !== 'Home') next({ path: '/' })
   }
-  // else if (to.name == 'Login' && localStorage.getItem('access_token')) next({name: 'Home'})
   else next()
 })
 

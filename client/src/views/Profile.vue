@@ -1,6 +1,6 @@
 <template>
 <div id='profile_page' class="container-sm p-5 mt-5">
-    <h3>Your Profile</h3>
+    <h3><i class="bi bi-person-circle"></i> Your Profile</h3>
     <br>
     <div class ='ms-5 mb-5'>
         <p>Name :    {{userData.name}}</p>
@@ -9,9 +9,14 @@
     </div>
     <hr>
     <br>
-    <div id='children'>
-        <router-link to="/profile">Your Recipes</router-link> | 
-        <router-link to="/profile/purchased">Purchased Recipes</router-link>
+    <div id='children' class="d-flex justify-content-between">
+        <div>
+            <router-link to="/profile">Your Recipes</router-link> | 
+            <router-link to="/profile/purchased">Purchased Recipes</router-link>
+        </div>
+        <div v-if='$route.path == "/profile"' class=" me-5">
+            <button class="btn btn-primary" @click='$router.push("/addRecipe")'>+ Create Recipe</button>
+        </div>
     </div>
     <router-view></router-view>
 </div>
@@ -45,7 +50,7 @@ export default {
 }
 
 #children a.router-link-exact-active {
-  color: #42b983;
+  color: #8a3d4f;
 }
 
 </style>

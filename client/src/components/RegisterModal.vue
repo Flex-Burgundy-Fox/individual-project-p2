@@ -8,8 +8,8 @@
           <div class="modal-body">
 
             <div class="mb-3">
-              <label for="name" class="form-label">Name</label>
-              <input v-model='user.name' type="string" class="form-control" placeholder="Your Fullname Here">
+              <label for="name" class="form-label">Name (optional)</label>
+              <input v-model='user.name' type="string" class="form-control" placeholder="We will use your email as name instead">
             </div>
 
             <div class="mb-3">

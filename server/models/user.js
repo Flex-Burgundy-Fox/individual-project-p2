@@ -14,10 +14,18 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       User.hasMany(models.Recipe, {foreignKey: 'userId'})
       User.hasMany(models.Rating, {foreignKey: 'userId'})
+      User.hasMany(models.Transaction, {foreignKey: 'userId'})
     }
   };
   User.init({
-    email: DataTypes.STRING,
+    email:{
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        isEmail: true,
+        notEmpty: true,
+      },
+    },
     password: DataTypes.STRING,
     name: DataTypes.STRING,
     status: DataTypes.STRING

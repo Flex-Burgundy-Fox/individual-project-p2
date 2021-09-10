@@ -10,7 +10,7 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <a class="nav-link" href="#" >Search Recipe</a>
+          <a class="nav-link" href="#" @click.prevent='$router.push("/search")' >Search Recipe</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="#" @click.prevent='$router.push("/addRecipe")'>Add Recipe</a>
@@ -41,8 +41,8 @@
             <li><a class="dropdown-item" href="#" @click.prevent='logout'>Logout</a></li>
           </ul>
       </div>
-      <a v-else class='fs-4 btn btn_icon' data-bs-toggle="modal" data-bs-target="#loginModal">
-        <i class="bi bi-person-square"></i>
+      <a v-else class='fs-5 btn btn_icon' data-bs-toggle="modal" data-bs-target="#loginModal">
+        Login <i class="bi bi-person-square"></i>
       </a>
     </div>
   </div>
@@ -62,7 +62,9 @@ export default {
         email: '',
         status: '',
       })
-      if(this.$route.path !== '/') this.$router.push('/')
+      if(this.$route.name !== 'Home') {
+        this.$router.push('/')
+      }
     }
 
   },

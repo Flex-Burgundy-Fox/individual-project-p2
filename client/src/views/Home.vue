@@ -16,7 +16,7 @@
       <div class="container border p-4 mt-5" style="background-color: rgba(245, 245, 245); width: 500px">
         <h2 class="mb-4">Gourmet Tavern Recipes</h2>
         <div class="row row-cols-3 align-items-start g-3">
-          <RecipeCard v-for='recipe in $store.state.gourmetTavern_recipes' :key="recipe.idMeal" :recipe='recipe'/>
+          <RecipeCard v-for='recipe in $store.state.gourmetTavern_recipes' :key="recipe.id" :recipe='recipe'/>
         </div>
       </div>
 

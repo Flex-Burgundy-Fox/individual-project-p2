@@ -1,5 +1,5 @@
 <template>
-<div class="border me-5">
+<div class="me-5">
     <div class="mb-5">
         <h3>Methods</h3>
         <div class="input-group mb-3">
@@ -14,9 +14,10 @@
         <button type="button" class="btn btn-primary btn-sm d-block me-0 ms-auto" @click='postMethod'>Add Method</button>
         <h5 class="ms-4 mt-4 text-muted" v-if='!methods.length'>No methods yet</h5>
         <ol>
-            <li v-for='(method, index) in methods' :key='index'>
+            <li class="mb-5" v-for='method in methods' :key='method.id'>
                 <p class="text-capitalize">{{method.title}}</p>
                 <div class='d-flex'>
+                    <i type='button' class="fs-4 bi bi-x-circle-fill align-self-center me-3" @click.prevent='destroyMethod(method.id)' style="color:red !important;"></i>
                     <img :src="method.imageUrl" :alt="method.title" class="img-thumbnail rounded" style="width: 200px; height: 200px;">
                     <div class="ms-5 text-start">
                         <p>{{method.description}}</p>
@@ -25,10 +26,12 @@
             </li>
         </ol>
     </div>
+    <hr class="mb-5">
     <div class="text-end">
+        <button v-if='isEdit' class="btn btn-secondary me-3" @click='$router.push("/profile")'>Back to profile</button>
+        <button v-if='isEdit' class="btn btn-success me-3" @click='$router.push("/recipe/"+ $route.params.recipeId)'>Look on page</button>
         <button class="btn btn-primary" @click='publishRecipe'>Publish</button>
     </div>
-
 </div>
   
 </template>
@@ -43,7 +46,9 @@ export default {
                 title : '',
                 description : '',
                 imageUrl : ''
-            }
+            },
+            recipeId : '',
+            isEdit : false
         }
     },
     methods: {
@@ -53,6 +58,16 @@ export default {
                 data : this.method
             })
             .then(({data}) => {
+                this.$toasted.success('Method Created', {
+                    icon: 'check',
+                    action: {
+                        text: 'Close',
+                        onClick: (e, toastObject) => {
+                            toastObject.goAway(0);
+                        }
+                    },
+                    duration: 3000
+                })
                 this.methods.push(this.method)
                 this.method = {
                     title : '',
@@ -72,19 +87,39 @@ export default {
                 status : 'published'
             })
                 .then(({data}) => {
-                    console.log(data); // message toasted
-                    this.$router.push('/userRecipe')
+                    console.log(data.message); // message toasted
+                    this.$router.push('/profile')
                 }).catch((err) => {
                     console.log(err);
                 });
+        },
+        destroyMethod(methodId){
+            this.$store.dispatch('destroyMethod', {
+                methodId,
+                recipeId : this.recipeId
+            })
+            .then(({data}) => {
+                console.log(data.message); // toasted succ
+                this.methods = this.methods.filter(el => el.id !== methodId)
+            }).catch((err) => {
+                console.log(err.response);
+            });
         }
     },
     mounted(){
-        this.method = {
-            title : '',
-            description : '',
-            imageUrl : ''
-        }
+         if(this.$route.path.includes('editRecipe')){
+            this.recipeId = this.$route.params.recipeId
+            this.isEdit = true
+            this.$store.dispatch('fetchRecipeDetail', {recipeId: this.$route.params.recipeId})
+            .then(({data}) => {
+                // console.log(data.Methods);
+                this.methods = data.Methods
+                
+            }).catch((err) => {
+                console.log(err);
+            });
+        } 
+        else return 'Add'
     }
     
 

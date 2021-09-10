@@ -37,16 +37,17 @@
             </tr>
             <tr>
                 <td>Price:</td>
-                <td><input type="number" v-model="recipe.price" :disabled=" recipe.category == 'public' ? true : false" ></td>
+                <td><input type="number" min="1000" v-model="recipe.price" :disabled=" recipe.category == 'public' ? true : false" ></td>
             </tr>
         </tbody>
     </table>
+    <hr class="mb-5">
     <div class="text-end">
-        <button v-if='!isEdit' class="btn btn-primary" @click='$store.dispatch("postRecipe", recipe)'>Next</button>
-        <button v-else class="btn btn-primary" @click='$store.dispatch("updateRecipe", recipe)'>Edit</button>
+        <button v-if='isEdit' class="btn btn-secondary me-3" @click='$router.push("/profile")'>Back to profile</button>
+        <button v-if='isEdit' class="btn btn-success me-3" @click='$router.push("/recipe/"+ $route.params.recipeId)'>Look on page</button>
+        <button v-if='isEdit' class="btn btn-primary" @click='$store.dispatch("editRecipe", {recipeId: $route.params.recipeId,  recipe})'>Save</button>
+        <button v-else class="btn btn-primary" @click='$store.dispatch("postRecipe", recipe)'>Next</button>
     </div>
-    
-
 </div>
 </template>
 
@@ -63,16 +64,16 @@ export default {
                 imageUrl: '',
                 category: 'public',
                 status: '',
-                price: 0
+                price: 1000
             },
             isEdit : false
         }
     },
     mounted() {
         if(this.$route.path.includes('editRecipe')){
-            this.$store.dispatch('fetchRecipe', {recipeId: this.$route.params.recipeId})
+            this.isEdit = true
+            this.$store.dispatch('fetchRecipeDetail', {recipeId: this.$route.params.recipeId})
             .then(({data}) => {
-                this.isEdit = true
 
                 const {name, timeReq, servings, summary, imageUrl, category, status, price} = data
                 this.recipe.name = name
@@ -83,6 +84,7 @@ export default {
                 this.recipe.category = category
                 this.recipe.status = status
                 this.recipe.price = price
+
             }).catch((err) => {
                 console.log(err);
             });

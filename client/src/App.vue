@@ -22,7 +22,8 @@ export default{
     if(localStorage.access_token){ 
       this.$store.commit('SET_TOKEN', localStorage.access_token)
       this.$store.dispatch('fetchUserData', {access_token : localStorage.access_token})
-      this.$store.dispatch('fetchOriginalRecipe')
+      this.$store.dispatch('fetchUserRecipe')
+      this.$store.dispatch('fetchPurchasedRecipe')
     }
   }
 }
