@@ -20,5 +20,8 @@
     "midtrans-client": "^1.2.5",
     "pg": "^8.7.1",
     "sequelize": "^6.6.5"
+  },
+  "devDependencies": {
+    "sequelize-cli": "^6.6.0"
   }
 }
