@@ -4,7 +4,7 @@ Gourmet Tavern
 
 ## Description
 
-Heroku Server = https://gourmet-tavern.herokuapp.com/
+Heroku Server = https://individual-project-p2-production.up.railway.app/
 
 Firebase Client = https://gourmet-tavern.web.app/
 
